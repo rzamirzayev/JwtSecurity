@@ -2,6 +2,7 @@ package com.example.JwtSecurityToken.controller;
 
 import com.example.JwtSecurityToken.model.Product;
 import com.example.JwtSecurityToken.service.ProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
     private final ProductService productService;
@@ -25,7 +27,7 @@ public class ProductController {
         return  ResponseEntity.ok(productService.getProductById(id));
     }
 
-    @PostMapping
+    @PostMapping("/save")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> saveProduct(@Valid @RequestBody Product product){
         return ResponseEntity.ok(productService.saveProduct(product));
